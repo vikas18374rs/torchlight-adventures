@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Classes", href: "#classes" },
-  { label: "Media", href: "#media" },
-  { label: "Community", href: "#community" },
+  { label: "About", href: "#about", isRoute: false },
+  { label: "Classes", href: "#classes", isRoute: false },
+  { label: "Media", href: "/media", isRoute: true },
+  { label: "Community", href: "#community", isRoute: false },
 ];
 
 export function Navbar() {
@@ -36,15 +37,25 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors duration-200 link-underline"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.isRoute ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors duration-200 link-underline"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors duration-200 link-underline"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </div>
 
           {/* Right side */}
@@ -70,16 +81,27 @@ export function Navbar() {
         {isOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-border/30 animate-fade-in">
             <div className="flex flex-col gap-4 pt-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) =>
+                link.isRoute ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="font-display text-sm uppercase tracking-wider text-foreground/80 hover:text-primary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
+              )}
               <Button variant="ember" size="sm" className="mt-2 w-fit">
                 Buy Now
               </Button>
