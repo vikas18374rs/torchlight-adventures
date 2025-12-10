@@ -2,8 +2,10 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, Sword, Wand2, Target, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCharacterById, characters } from "@/data/characters";
+import { getSkillTreesByCharacter } from "@/data/skillTrees";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { SkillTreeSection } from "@/components/SkillTreeSection";
 
 function StatBar({ label, value, icon: Icon }: { label: string; value: number; icon: React.ElementType }) {
   return (
@@ -133,42 +135,13 @@ export default function CharacterDetail() {
         </div>
       </section>
 
-      {/* Skills */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="font-display text-3xl font-bold text-foreground text-center mb-12">
-              Signature Skills
-            </h2>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {character.skills.map((skill, index) => (
-                <div
-                  key={skill.name}
-                  className="group bg-card rounded-xl p-6 border border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-display text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                      {skill.name}
-                    </h3>
-                    <span
-                      className={`text-xs uppercase tracking-wider px-2 py-1 rounded ${
-                        skill.type === "active"
-                          ? "bg-primary/20 text-primary"
-                          : "bg-muted text-foreground/60"
-                      }`}
-                    >
-                      {skill.type}
-                    </span>
-                  </div>
-                  <p className="text-foreground/60 text-sm">{skill.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Skill Trees */}
+      {getSkillTreesByCharacter(character.id) && (
+        <SkillTreeSection 
+          trees={getSkillTreesByCharacter(character.id)!} 
+          characterName={character.name}
+        />
+      )}
 
       {/* Other Characters */}
       <section className="py-16 bg-card">
